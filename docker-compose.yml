@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    container_name: season_snap
+    ports:
+      - "3000:80"
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiMzgzZTJkMTdmN2QzMmYwZDgyOWY3NzI0ZTdiZjA4YzIiLCJ0IjoiMGVlMmVjNGEtY2Q3Yi00NTEwLWEyMDUtYjY4N2IwNDY1ZGFiIiwicyI6IlpURTBPV0V5T1RVdE9UWTRNUzAwTW1SakxXSmxOemd0Wm1ObU5HRTBNMkl3WlRnMSJ9
