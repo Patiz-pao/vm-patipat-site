@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy Preview') {
             steps {
                 script {
-                    echo "🚀 Deploying to http://${SAFE_BRANCH_NAME}.napatipat.site"
+                    echo "Deploying to http://${SAFE_BRANCH_NAME}.napatipat.site"
                     
                     sh "docker rm -f ${CONTAINER_NAME} || true"
 
@@ -32,7 +32,7 @@ pipeline {
                         --restart always \
                         --network ${NETWORK_NAME} \
                         --label "traefik.enable=true" \
-                        --label "traefik.http.routers.${SAFE_BRANCH_NAME}.rule=Host(\`${SAFE_BRANCH_NAME}.napatipat.site\`)" \
+                        --label "traefik.http.routers.${SAFE_BRANCH_NAME}.rule=Host('${SAFE_BRANCH_NAME}.napatipat.site')" \
                         --label "traefik.http.services.${SAFE_BRANCH_NAME}.loadbalancer.server.port=80" \
                         ${IMAGE_NAME}
                     """
