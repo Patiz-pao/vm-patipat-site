@@ -1,11 +1,13 @@
 version: "3.8"
+
 services:
   app:
     build: .
     container_name: season_snap
+    restart: always
     ports:
       - "3000:80"
-      
+
   jenkins:
     image: jenkins/jenkins:lts-jdk17
     container_name: jenkins
