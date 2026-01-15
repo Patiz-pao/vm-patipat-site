@@ -7,6 +7,9 @@ services:
     restart: always
     ports:
       - "3000:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.main.rule=Host(`napatipat.site`)"
 
   jenkins:
     image: jenkins/jenkins:lts-jdk17
@@ -16,6 +19,8 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+    environment:
+      - JAVA_OPTS=-Xmx512m
     volumes:
       - ./jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
@@ -27,3 +32,22 @@ services:
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=eyJhIjoiMzgzZTJkMTdmN2QzMmYwZDgyOWY3NzI0ZTdiZjA4YzIiLCJ0IjoiMGVlMmVjNGEtY2Q3Yi00NTEwLWEyMDUtYjY4N2IwNDY1ZGFiIiwicyI6IlpURTBPV0V5T1RVdE9UWTRNUzAwTW1SakxXSmxOemd0Wm1ObU5HRTBNMkl3WlRnMSJ9
+
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+      - "8080:8080"
+
+networks:
+  default:
+    name: app_default
+    external: true
